@@ -3,209 +3,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة جسدي | Jasadi Real Platform</title>
+    <title>منصة جسدي | Jasadi Platform</title>
     <style>
-        :root { --primary: #e91e63; --bg: #0d0d11; --card: #181822; --text: #ffffff; --sub: #9e9ea6; --border: #282836; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
-        
-        header { background: #121219; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
-        .status-badge { background: #232330; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; color: #ffca28; }
+        :root {
+            --primary: #e91e63;
+            --primary-hover: #c2185b;
+            --bg-dark: #0f0f12;
+            --card-bg: #1a1a24;
+            --text-main: #ffffff;
+            --text-sub: #a0a0b0;
+            --border: #2a2a3a;
+        }
 
-        .layout { display: flex; flex: 1; max-width: 1400px; margin: 0 auto; width: 100%; }
-        sidebar { width: 260px; background: #121219; padding: 20px; border-left: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
-        sidebar button { background: none; border: none; color: var(--sub); text-align: right; font-size: 1rem; padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        sidebar button.active, sidebar button:hover { background: var(--primary); color: #fff; font-weight: bold; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
 
-        main { flex: 1; padding: 30px; overflow-y: auto; }
-        .panel { background: var(--card); padding: 25px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .btn { background: var(--primary); color: #fff; border: none; padding: 10px 22px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        /* Login Screen */
+        #login-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: var(--card-bg); padding: 30px; border-radius: 15px; border: 1px solid var(--border); width: 90%; max-width: 400px; text-align: center; }
+        .login-box input { width: 100%; padding: 12px; margin: 10px 0; background: #111; border: 1px solid var(--border); color: #fff; border-radius: 8px; }
+
+        /* Header */
+        header { background: #14141c; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .logo { font-size: 1.8rem; font-weight: bold; color: var(--primary); }
+        .badge { background: #333; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; color: #ffca28; }
+
+        /* Layout */
+        .app-container { display: flex; flex: 1; max-width: 1400px; margin: 0 auto; width: 100%; }
+        sidebar { width: 260px; background: #14141c; padding: 20px; border-left: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+        sidebar button { background: none; border: none; color: var(--text-sub); text-align: right; font-size: 1rem; padding: 12px 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        sidebar button:hover, sidebar button.active { background: var(--primary); color: #fff; font-weight: bold; }
+
+        main { flex: 1; padding: 25px; overflow-y: auto; }
+        .card { background: var(--card-bg); padding: 25px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 20px; }
+
+        /* Buttons */
+        .btn { background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn:hover { background: var(--primary-hover); }
         .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
 
-        .feed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 15px; margin-top: 20px; }
-        .card-item { background: #21212e; border-radius: 12px; height: 300px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 15px; border: 1px solid var(--border); }
-        .card-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-        .card-info { position: relative; z-index: 2; background: linear-gradient(transparent, rgba(0,0,0,0.85)); margin: -15px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        /* Feed */
+        .feed-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .tab-btn { background: #252535; border: none; color: #fff; padding: 8px 18px; border-radius: 6px; cursor: pointer; }
+        .tab-btn.active { background: var(--primary); }
+        .feed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; margin-top: 15px; }
+        .feed-card { background: #222230; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); position: relative; height: 320px; display: flex; flex-direction: column; justify-content: flex-end; }
+        .feed-media { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+        .feed-overlay { position: relative; z-index: 2; padding: 15px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); display: flex; justify-content: space-between; align-items: flex-end; }
 
-        .cam-box { width: 100%; max-width: 380px; height: 280px; background: #000; margin: 20px auto; border-radius: 16px; border: 2px solid var(--primary); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+        /* Camera */
+        .camera-container { width: 100%; max-width: 400px; height: 300px; background: #000; margin: 20px auto; border-radius: 15px; border: 2px solid var(--primary); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
         video { width: 100%; height: 100%; object-fit: cover; }
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-body { background: var(--card); padding: 30px; border-radius: 16px; border: 1px solid var(--primary); max-width: 420px; text-align: center; }
+        /* Modal */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; }
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 15px; border: 1px solid var(--primary); max-width: 450px; text-align: center; width: 90%; }
 
-        @media(max-width: 768px) { .layout { flex-direction: column; } sidebar { width: 100%; flex-direction: row; overflow-x: auto; } sidebar button { white-space: nowrap; } }
+        @media (max-width: 768px) {
+            .app-container { flex-direction: column; }
+            sidebar { width: 100%; flex-direction: row; overflow-x: auto; border-left: none; border-bottom: 1px solid var(--border); }
+            sidebar button { white-space: nowrap; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- 0. Login Screen -->
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2 style="color: var(--primary); margin-bottom: 10px;">جسدي | Jasadi</h2>
+            <p style="color: var(--text-sub); margin-bottom: 20px;">تسجيل الدخول إلى المنصة</p>
+            <input type="email" id="user-email" placeholder="البريد الإلكتروني / Google Mail" value="user@jasadi.com">
+            <input type="password" placeholder="كلمة المرور" value="12345678">
+            <button class="btn" style="width: 100%; margin-top: 10px;" onclick="completeLogin()">تسجيل الدخول الآن</button>
+        </div>
+    </div>
+
+    <!-- Header -->
     <header>
         <div class="logo">جسدي | Jasadi</div>
-        <div style="display: flex; gap: 12px; align-items: center;">
-            <span class="status-badge" id="vip-status">الحساب: مجاني</span>
-            <button class="btn" onclick="openVIPModal()">ترقية للبريميوم 👑</button>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span class="badge" id="account-status">الحساب: مجاني</span>
+            <button class="btn" onclick="openPremiumModal()">ترقية للبريميوم 👑</button>
         </div>
     </header>
 
-    <div class="layout">
+    <div class="app-container">
+        <!-- Sidebar -->
         <sidebar>
-            <button class="active" onclick="showTab('feed', this)">الرئيسية (Shorts)</button>
-            <button onclick="showTab('verify', this)">نظام التحقق الحيوي</button>
-            <button onclick="showTab('chat', this)">المحادثات الخاصة</button>
-            <button onclick="showTab('location', this)">إعدادات الموقع</button>
+            <button class="active" onclick="switchSection('feed', this)">الرئيسية (Shorts)</button>
+            <button onclick="switchSection('verify', this)">نظام التحقق الحيوي</button>
+            <button onclick="switchSection('chat', this)">المحادثات (Chat)</button>
+            <button onclick="switchSection('location', this)">تحديد الموقع</button>
         </sidebar>
 
         <main>
-            <!-- 1. Feed / Shorts Tab -->
-            <section id="feed-tab" class="panel">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h2>المحتوى العام (Shorts)</h2>
-                    <button class="btn btn-outline" onclick="document.getElementById('upload-input').click()">+ رفع محتوى</button>
-                    <input type="file" id="upload-input" style="display:none" onchange="uploadMedia(event)">
-                </div>
-                <div style="margin-top: 15px; display:flex; gap:10px;">
-                    <button class="btn" style="padding: 6px 15px;" onclick="renderPosts('photo')">تبويب الصور</button>
-                    <button class="btn btn-outline" style="padding: 6px 15px;" onclick="renderPosts('video')">تبويب الفيديوهات</button>
-                </div>
-                <div class="feed-grid" id="posts-container"></div>
-            </section>
-
-            <!-- 2. Liveness Verification Tab -->
-            <section id="verify-tab" class="panel" style="display:none;">
-                <h2>التحقق الحيوي (Face AI Liveness)</h2>
-                <p style="color:var(--sub); margin-top:5px;">شغّل الكاميرا للبدء بالتحقق الحقيقي عبر قراءة الوجه والحركات</p>
-                
-                <div class="cam-box">
-                    <video id="camera-stream" autoplay playsinline style="display:none;"></video>
-                    <span id="cam-txt" style="color:#666;">📸 الكاميرا مغلقة</span>
-                </div>
-
-                <div style="text-align:center;">
-                    <p id="step-instruction" style="font-weight:bold; color:var(--primary); font-size:1.1rem; margin-bottom:15px;">انقر على الزر لتشغيل الكاميرا</p>
-                    <button class="btn" id="start-cam-btn" onclick="startCamera()">بدء قراءة الوجه والتحقق الحيوي</button>
-                    <button class="btn btn-outline" id="next-step-btn" style="display:none;" onclick="nextLivenessStep()">الحركة التالية ➔</button>
-                </div>
-            </section>
-
-            <!-- 3. Chat Tab -->
-            <section id="chat-tab" class="panel" style="display:none;">
-                <h2>المحادثات والرسائل الخاصة</h2>
-                <div style="background:#111118; height:250px; border-radius:10px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--sub);">
-                    💬 لا توجد محادثات جارية حالياً (بانتظار انضمام المستشارين/المستخدمين).
-                </div>
-            </section>
-
-            <!-- 4. Location Settings Tab -->
-            <section id="location-tab" class="panel" style="display:none;">
-                <h2>إعدادات الموقع الجغرافي</h2>
-                <div style="display:flex; flex-direction:column; gap:12px; max-width:450px; margin-top:15px;">
-                    <label>الدولة: <select style="width:100%; padding:10px; background:#111; color:#fff; border:1px solid var(--border); border-radius:8px;"><option>الأردن</option><option>السعودية</option></select></label>
-                    <label>المحافظة: <select style="width:100%; padding:10px; background:#111; color:#fff; border:1px solid var(--border); border-radius:8px;"><option>البلقاء</option><option>عمان</option></select></label>
-                    <label>المدينة / المنطقة: <input type="text" value="السلط" style="width:100%; padding:10px; background:#111; color:#fff; border:1px solid var(--border); border-radius:8px;"></label>
-                    <label>الحي (اختياري): <input type="text" placeholder="اكتب اسم الحي..." style="width:100%; padding:10px; background:#111; color:#fff; border:1px solid var(--border); border-radius:8px;"></label>
-                    <div style="background:#1f1f2c; padding:12px; border-radius:8px; border:1px solid var(--border);">
-                        <label style="cursor:pointer; display:flex; gap:10px; align-items:center;">
-                            <input type="checkbox" id="hide-loc" onchange="toggleHideLoc(this)">
-                            <span>إخفاء الموقع الجغرافي عن المستخدمين</span>
-                        </label>
-                        <small style="color:var(--primary); display:block; margin-top:4px;">👑 ميزة حصرية للمشتركين فقط</small>
+            <!-- 1. Feed -->
+            <section id="feed-section" class="card">
+                <div class="feed-header">
+                    <div>
+                        <h2>المحتوى العام (Shorts)</h2>
+                        <p style="color: var(--text-sub); font-size: 0.9rem;">مسموح رفع الفيديوهات والصور لتلقي الهدايا (Tips & Gifts)</p>
                     </div>
+                    <div>
+                        <button class="btn btn-outline" onclick="triggerUpload()">+ رفع محتوى جديد</button>
+                        <input type="file" id="media-file-input" style="display: none;" onchange="handleFileUpload(event)">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px; display: flex; gap: 10px;">
+                    <button class="tab-btn active" id="tab-photos" onclick="filterFeed('photos')">تبويب الصور</button>
+                    <button class="tab-btn" id="tab-videos" onclick="filterFeed('videos')">تبويب الفيديوهات</button>
+                </div>
+
+                <div class="feed-grid" id="feed-container"></div>
+            </section>
+
+            <!-- 2. Liveness Verification -->
+            <section id="verify-section" class="card" style="display: none;">
+                <h2>نظام التحقق الحيوي والتأكيد (Face Detection)</h2>
+                <p style="color: var(--text-sub); margin-bottom: 15px;">انقر للبدء بقراءة الوجه وتأكيد الهوية عبر حركات الكاميرا الحية.</p>
+
+                <div class="camera-container">
+                    <video id="webcam" autoplay playsinline style="display: none;"></video>
+                    <div id="cam-placeholder" style="color: #666; text-align: center;">
+                        📸 الكاميرا متوقفة<br><small>اضغط بدء قراءة الوجه</small>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 15px;">
+                    <p id="liveness-step" style="font-weight: bold; color: var(--primary); font-size: 1.2rem; margin-bottom: 15px;">الحالة: بانتظار التشغيل</p>
+                    <button class="btn" id="cam-btn" onclick="toggleCamera()">بدء قراءة الوجه والتحقق الحيوي</button>
+                    <button class="btn btn-outline" id="next-action-btn" style="display: none;" onclick="processLivenessStep()">إكمال الحركة التالية ➔</button>
+                </div>
+            </section>
+
+            <!-- 3. Chat -->
+            <section id="chat-section" class="card" style="display: none;">
+                <h2>المحادثات الخاصة (Chat)</h2>
+                <p style="color: var(--text-sub); margin-bottom: 20px;">تواصل مباشر (لقطات وتسجيل الشاشة محظور لغير المشتركين).</p>
+                
+                <div style="background: #111; height: 300px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-sub); flex-direction: column; gap: 10px;">
+                    <span>💬 لا توجد محادثات نشطة حالياً.</span>
+                    <small>ستظهر المحادثات فور تواصل الأعضاء والمستشارين.</small>
+                </div>
+            </section>
+
+            <!-- 4. Location Settings -->
+            <section id="location-section" class="card" style="display: none;">
+                <h2>إعدادات الموقع الجغرافي</h2>
+                <p style="color: var(--text-sub); margin-bottom: 20px;">اختر موقعك التفاعلي مع إمكانية التحكم الكامل.</p>
+
+                <div style="display: flex; flex-direction: column; gap: 15px; max-width: 500px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px;">الدولة:</label>
+                        <select id="select-country" style="width: 100%; padding: 10px; background: #111; color: #fff; border: 1px solid var(--border); border-radius: 8px;">
+                            <option value="JO">الأردن</option>
+                            <option value="SA">السعودية</option>
+                            <option value="AE">الإمارات</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 5px;">المحافظة:</label>
+                        <select id="select-state" style="width: 100%; padding: 10px; background: #111; color: #fff; border: 1px solid var(--border); border-radius: 8px;">
+                            <option value="balqa">البلقاء</option>
+                            <option value="amman">عمان</option>
+                            <option value="irbid">إربد</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 5px;">المدينة / المنطقة:</label>
+                        <input type="text" id="input-city" value="السلط" style="width: 100%; padding: 10px; background: #111; color: #fff; border: 1px solid var(--border); border-radius: 8px;">
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 5px;">اسم الحي (اختياري):</label>
+                        <input type="text" id="input-neighborhood" placeholder="أدخل اسم الحي..." style="width: 100%; padding: 10px; background: #111; color: #fff; border: 1px solid var(--border); border-radius: 8px;">
+                    </div>
+
+                    <div style="margin-top: 10px; background: #222230; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="hide-location-check" onchange="handleHideLocationToggle(this)">
+                            <span>إخفاء الموقع الجغرافي عن باقي المستخدمين</span>
+                        </label>
+                        <small style="color: var(--primary); display: block; margin-top: 5px;">👑 ميزة حصريّة للمشتركين فقط</small>
+                    </div>
+
+                    <button class="btn" style="margin-top: 10px;" onclick="saveLocationSettings()">حفظ إعدادات الموقع</button>
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- Upgrade VIP Modal Popup -->
-    <div id="vip-modal" class="modal">
-        <div class="modal-body">
-            <h2 style="color:var(--primary);">الترقية للبريميوم 👑</h2>
-            <p style="color:var(--sub); margin:15px 0;">استمتع بإخفاء موقعك الجغرافي، منع التقاط الشاشة، ورفع وسائط المحادثات دون قيود.</p>
-            <button class="btn" style="width:100%;" onclick="activateVIP()">تفعيل الاشتراك التجريبي فوراً</button>
-            <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="closeVIPModal()">إغلاق</button>
+    <!-- Modal Premium -->
+    <div id="premium-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--primary); margin-bottom: 10px;">ترقية الحساب إلى البريميوم 👑</h2>
+            <p style="color: var(--text-sub); margin-bottom: 20px;">احصل على كافة الميزات الحصرية: إخفاء الموقع، تفعيل رفع الوسائط، ومنع لقطات الشاشة.</p>
+            <button class="btn" style="width: 100%;" onclick="activatePremiumDemo()">تفعيل الاشتراك فوراً (تجريبي)</button>
+            <button class="btn btn-outline" style="width: 100%; margin-top: 10px;" onclick="closePremiumModal()">إلغاء</button>
         </div>
     </div>
 
     <script>
-        let isVIP = false;
-        let posts = [
-            { id: 1, type: 'photo', user: 'مستخدم #1 (السلط)', gifts: 5, src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500' },
-            { id: 2, type: 'video', user: 'مستخدم #2 (عمان)', gifts: 12, src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500' }
+        let isPremium = false;
+        let activeTab = 'photos';
+        let currentLivenessStep = 0;
+        let stream = null;
+
+        const livenessSteps = [
+            "الخطوة 1: انظر مباشرة للكاميرا وابتسم",
+            "الخطوة 2: مد اللسان للأمام وافتح الفم قليلاً",
+            "الخطوة 3: حرك رأسك ببطء نحو اليمين ثم اليسار",
+            "الخطوة 4: ارفع رأسك للأعلى والأسفل",
+            "تم التوثيق والتحقق بنجاح! ✔️ (حسابك موثق حيويين)"
         ];
-        const steps = ["ابتسم وانظر للكاميرا", "مد اللسان وافتح الفم", "حرك رأسك يميناً ويساراً", "تم التحقق والتوثيق بنجاح! ✔️"];
-        let stepIdx = 0;
 
-        window.onload = () => renderPosts('photo');
+        const mockPosts = [
+            { id: 1, type: 'photos', user: 'مستخدم #1 (السلط)', gifts: 3, img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500' },
+            { id: 2, type: 'photos', user: 'مستخدم #2 (البلقاء)', gifts: 7, img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500' },
+            { id: 3, type: 'videos', user: 'مستخدم #3 (عمان)', gifts: 12, img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500' }
+        ];
 
-        function showTab(name, btn) {
-            document.querySelectorAll('main section').forEach(s => s.style.display = 'none');
-            document.getElementById(name + '-tab').style.display = 'block';
-            document.querySelectorAll('sidebar button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        window.onload = function() { renderFeed(); };
+
+        function completeLogin() { document.getElementById('login-overlay').style.display = 'none'; }
+
+        function switchSection(sectionName, element) {
+            document.querySelectorAll('main section').forEach(sec => sec.style.display = 'none');
+            document.getElementById(sectionName + '-section').style.display = 'block';
+            document.querySelectorAll('sidebar button').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
         }
 
-        function renderPosts(filterType) {
-            const container = document.getElementById('posts-container');
+        function filterFeed(type) {
+            activeTab = type;
+            document.getElementById('tab-photos').classList.toggle('active', type === 'photos');
+            document.getElementById('tab-videos').classList.toggle('active', type === 'videos');
+            renderFeed();
+        }
+
+        function renderFeed() {
+            const container = document.getElementById('feed-container');
             container.innerHTML = '';
-            posts.filter(p => p.type === filterType).forEach(post => {
-                container.innerHTML += `
-                    <div class="card-item">
-                        <img src="${post.src}" alt="media">
-                        <div class="card-info">
-                            <span>${post.user}</span>
-                            <button class="btn" style="padding:4px 10px; font-size:0.8rem;" onclick="sendGift(${post.id})">🎁 هدية (${post.gifts})</button>
-                        </div>
-                    </div>`;
+            const filtered = mockPosts.filter(item => item.type === activeTab);
+            filtered.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'feed-card';
+                card.innerHTML = `
+                    <img src="${post.img}" class="feed-media" alt="Post">
+                    <div class="feed-overlay">
+                        <span>${post.user}</span>
+                        <button class="btn" style="padding: 5px 12px; font-size: 0.85rem;" onclick="sendGift(${post.id})">🎁 هدية (${post.gifts})</button>
+                    </div>
+                `;
+                container.appendChild(card);
             });
         }
 
-        function sendGift(id) {
-            let p = posts.find(item => item.id === id);
-            if(p) { p.gifts++; renderPosts(p.type); alert('🎁 تم إرسال الهدية بنجاح!'); }
+        function sendGift(postId) {
+            const item = mockPosts.find(p => p.id === postId);
+            if(item) { item.gifts += 1; renderFeed(); alert('🎁 تم إرسال الهدية بنجاح!'); }
         }
 
-        function uploadMedia(e) {
-            const file = e.target.files[0];
-            if(file) {
-                posts.unshift({ id: Date.now(), type: file.type.startsWith('video')?'video':'photo', user: 'حسابي', gifts: 0, src: URL.createObjectURL(file) });
-                renderPosts(file.type.startsWith('video')?'video':'photo');
-                alert('تم رفع المحتوى بنجاح!');
+        function triggerUpload() { document.getElementById('media-file-input').click(); }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const newPost = {
+                    id: Date.now(),
+                    type: file.type.startsWith('video') ? 'videos' : 'photos',
+                    user: 'أنت (حسابي)',
+                    gifts: 0,
+                    img: URL.createObjectURL(file)
+                };
+                mockPosts.unshift(newPost);
+                filterFeed(newPost.type);
+                alert('تم رفع الملف بنجاح!');
             }
         }
 
-        async function startCamera() {
-            try {
-                let stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                let v = document.getElementById('camera-stream');
-                v.srcObject = stream; v.style.display = 'block';
-                document.getElementById('cam-txt').style.display = 'none';
-                document.getElementById('start-cam-btn').style.display = 'none';
-                document.getElementById('next-step-btn').style.display = 'inline-block';
-                document.getElementById('step-instruction').innerText = steps[0];
-            } catch(e) { alert('يرجى الموافقة على تشغيل الكاميرا للتحقق الحيوي.'); }
-        }
+        async function toggleCamera() {
+            const video = document.getElementById('webcam');
+            const placeholder = document.getElementById('cam-placeholder');
+            const camBtn = document.getElementById('cam-btn');
+            const nextBtn = document.getElementById('next-action-btn');
 
-        function nextLivenessStep() {
-            stepIdx++;
-            if(stepIdx < steps.length) {
-                document.getElementById('step-instruction').innerText = steps[stepIdx];
-                if(stepIdx === steps.length - 1) {
-                    document.getElementById('next-step-btn').style.display = 'none';
-                    document.getElementById('step-instruction').style.color = '#4caf50';
+            if (!stream) {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    camBtn.style.display = 'none';
+                    nextBtn.style.display = 'inline-block';
+                    currentLivenessStep = 0;
+                    document.getElementById('liveness-step').innerText = livenessSteps[0];
+                } catch (err) {
+                    alert('يرجى الموافقة على استخدام الكاميرا لإكمال قراءة الوجه.');
                 }
             }
         }
 
-        function toggleHideLoc(cb) { if(!isVIP) { cb.checked = false; openVIPModal(); } else { alert('تم تفعيل إخفاء الموقع للبريميوم.'); } }
-        function openVIPModal() { document.getElementById('vip-modal').style.display = 'flex'; }
-        function closeVIPModal() { document.getElementById('vip-modal').style.display = 'none'; }
-        function activateVIP() {
-            isVIP = true;
-            document.getElementById('vip-status').innerText = 'الحساب: بريميوم 👑';
-            document.getElementById('vip-status').style.background = 'var(--primary)';
-            document.getElementById('vip-status').style.color = '#fff';
-            document.getElementById('hide-loc').checked = true;
-            closeVIPModal();
-            alert('تم تفعيل اشتراك البريميوم بنجاح!');
+        function processLivenessStep() {
+            currentLivenessStep++;
+            if (currentLivenessStep < livenessSteps.length) {
+                document.getElementById('liveness-step').innerText = livenessSteps[currentLivenessStep];
+                if (currentLivenessStep === livenessSteps.length - 1) {
+                    document.getElementById('next-action-btn').style.display = 'none';
+                    document.getElementById('liveness-step').style.color = '#4caf50';
+                }
+            }
+        }
+
+        function handleHideLocationToggle(checkbox) {
+            if (!isPremium) { checkbox.checked = false; openPremiumModal(); }
+            else { alert('تم إخفاء موقعك بنجاح للبريميوم.'); }
+        }
+
+        function saveLocationSettings() { alert('تم حفظ إعدادات الموقع الجغرافي بنجاح!'); }
+        function openPremiumModal() { document.getElementById('premium-modal').style.display = 'flex'; }
+        function closePremiumModal() { document.getElementById('premium-modal').style.display = 'none'; }
+        function activatePremiumDemo() {
+            isPremium = true;
+            document.getElementById('account-status').innerText = 'الحساب: بريميوم 👑';
+            document.getElementById('account-status').style.background = 'var(--primary)';
+            document.getElementById('account-status').style.color = '#fff';
+            document.getElementById('hide-location-check').checked = true;
+            closePremiumModal();
+            alert('تم تفعيل الترقية للبريميوم بنجاح!');
         }
     </script>
 </body>
