@@ -3,14 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جسادي - Jasadi</title>
+    <title>منصة جسدي | Jasadi Platform</title>
     <style>
-        body { font-family: Tahoma, sans-serif; background: #111; color: #fff; text-align: center; padding: 50px; }
-        h1 { color: #e91e63; }
+        :root {
+            --primary-color: #e91e63;
+            --bg-dark: #0f0f12;
+            --card-bg: #1a1a24;
+            --text-main: #ffffff;
+            --text-sub: #a0a0b0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: #14141c; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a3a; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: var(--primary-color); }
+
+        .container { display: flex; flex: 1; max-width: 1400px; margin: 0 auto; width: 100%; }
+        
+        /* Sidebar Menu */
+        sidebar { width: 250px; background: #14141c; padding: 20px; border-left: 1px solid #2a2a3a; display: flex; flex-direction: column; gap: 15px; }
+        sidebar button { background: none; border: none; color: var(--text-sub); text-align: right; font-size: 1.1rem; padding: 10px 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        sidebar button:hover, sidebar button.active { background: var(--primary-color); color: #fff; }
+
+        /* Main Content Panel */
+        main { flex: 1; padding: 25px; display: flex; flex-direction: column; gap: 20px; }
+        
+        .card { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid #2a2a3a; }
+        .btn-primary { background: var(--primary-color); color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        /* Liveness Verification Box */
+        .verify-box { text-align: center; border: 2px dashed var(--primary-color); padding: 30px; border-radius: 15px; }
+        .camera-preview { width: 100%; max-width: 320px; height: 240px; background: #000; margin: 15px auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 2px solid #333; }
+
+        /* Grid Layout for Feeds */
+        .feed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
+        .feed-item { background: #252535; height: 280px; border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 10px; }
+        .gift-btn { position: absolute; top: 10px; left: 10px; background: rgba(233, 30, 99, 0.8); border: none; color: white; padding: 5px 10px; border-radius: 20px; cursor: pointer; }
+
+        /* Responsive Design Rules */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            sidebar { width: 100%; flex-direction: row; overflow-x: auto; border-left: none; border-bottom: 1px solid #2a2a3a; }
+            sidebar button { white-space: nowrap; }
+        }
     </style>
 </head>
 <body>
-    <h1>منصة جسدي - Jasadi</h1>
-    <p>جاري إعداد النظام والتحقق الحيوي وقاعدة البيانات...</p>
+
+    <header>
+        <div class="logo">جسدي | Jasadi</div>
+        <div>
+            <span style="font-size: 0.9rem; color: #888;">الحالة: غير مشترك (مجاني)</span>
+            <button class="btn-primary" style="margin-right: 10px;">ترقية للبريميوم</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <sidebar>
+            <button class="active" onclick="showSection('feed')">الرئيسية (Shorts)</button>
+            <button onclick="showSection('verify')">نظام التحقق الحيوي</button>
+            <button onclick="showSection('chat')">المحادثات (Chat)</button>
+            <button onclick="showSection('location')">تحديد الموقع</button>
+        </sidebar>
+
+        <main>
+            <!-- 1. General Feed Section -->
+            <section id="feed" class="card">
+                <h2>المحتوى العام (Shorts)</h2>
+                <p style="color: var(--text-sub); margin-bottom: 15px;">حد الرفع: حتى 3 فيديوهات يومياً لتلقي الهدايا (Gifts & Tips)</p>
+                
+                <div style="margin-bottom: 15px;">
+                    <button class="btn-primary" style="padding: 6px 15px;">تبويب الصور</button>
+                    <button class="btn-primary" style="padding: 6px 15px; background: #333;">تبويب الفيديوهات</button>
+                </div>
+
+                <div class="feed-grid">
+                    <div class="feed-item">
+                        <button class="gift-btn">🎁 أرسل هدية (+18)</button>
+                        <span>مستخدم #1 (السلط)</span>
+                    </div>
+                    <div class="feed-item">
+                        <button class="gift-btn">🎁 أرسل هدية (+18)</button>
+                        <span>مستخدم #2 (البلقاء)</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Liveness Verification Section -->
+            <section id="verify" class="card" style="display:none;">
+                <h2>التحقق الحيوي والأمان (قراءة الوجه)</h2>
+                <p style="color: var(--text-sub);">يجب إكمال الحركات التفاعلية لتفعيل الحساب (الفيديو يحفظ للمدير فقط)</p>
+                
+                <div class="verify-box" style="margin-top: 15px;">
+                    <div class="camera-preview">
+                        <span style="color: #666;">كاميرا التحقق الحية</span>
+                    </div>
+                    <p id="action-instruction" style="font-weight: bold; color: var(--primary-color);">الحركة المطلوبة: ابتسم ومد اللسان للأمام</p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn-primary">بدء قراءة الوجه وتحديد الجنس</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Chat & Limits Section -->
+            <section id="chat" class="card" style="display:none;">
+                <h2>نظام المحادثات والوسائط</h2>
+                <div style="background: #252535; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <p style="color: #ff5252;">⚠️ تنبيه الأمان: لقطات وتسجيل الشاشة ممنوع لغير المشتركين.</p>
+                    <hr style="border-color: #333; margin: 10px 0;">
+                    <p>قيود الحساب المجاني الحالي:</p>
+                    <ul>
+                        <li>الصور: صورة واحدة يومياً فقط.</li>
+                        <li>الفيديوهات: ممنوع الرفع في الشات الخاص.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 4. Location Settings -->
+            <section id="location" class="card" style="display:none;">
+                <h2>إعدادات الموقع الجغرافي</h2>
+                <form style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin-top: 15px;">
+                    <label>الدولة (إجباري): <input type="text" value="الأردن" disabled style="width:100%; padding: 8px; background: #222; color: #fff; border: 1px solid #444;"></label>
+                    <label>المحافظة (إجباري): <input type="text" value="البلقاء" disabled style="width:100%; padding: 8px; background: #222; color: #fff; border: 1px solid #444;"></label>
+                    <label>المدينة (اختياري): <input type="text" value="السلط" style="width:100%; padding: 8px; background: #222; color: #fff; border: 1px solid #444;"></label>
+                    <label>الحي/المنطقة (اختياري): <input type="text" placeholder="اكتب اسم الحي" style="width:100%; padding: 8px; background: #222; color: #fff; border: 1px solid #444;"></label>
+                    <label style="color: var(--text-sub);"><input type="checkbox" disabled> إخفاء الموقع الجغرافي (ميزة للمشتركين فقط)</label>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('main section').forEach(sec => sec.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+            document.querySelectorAll('sidebar button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>
